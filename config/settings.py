@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 import os
+from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -41,6 +42,9 @@ INSTALLED_APPS = [
 
 	'rest_framework',
 	'drf_yasg',
+	'rest_framework_simplejwt',
+
+	'user',
 
 ]
 
@@ -126,3 +130,19 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'user.User'
+
+REST_FRAMEWORK = {
+	'DEFAULT_AUTHENTICATION_CLASSES': (
+		'rest_framework_simplejwt.authentication.JWTAuthentication',
+	),
+	'DEFAULT_PERMISSION_CLASSES': [
+		'rest_framework.permissions.IsAuthenticated',
+	]
+}
+
+SIMPLE_JWT = {
+	'ACCESS_TOKEN_LIFETIME': timedelta(hours=2),
+	'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
