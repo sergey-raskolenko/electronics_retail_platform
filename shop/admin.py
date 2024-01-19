@@ -22,9 +22,7 @@ class OrganizationAdmin(admin.ModelAdmin):
 		"""
 		Возвращает ссылку на объект поставщика.
 		"""
-		if not obj.supplier:
-			return None
-		else:
+		if obj.supplier:
 			url = reverse('admin:shop_organization_change', args=[obj.supplier.id])
 			return format_html("<a href='{}'>{}</a>", url, obj.supplier)
 
