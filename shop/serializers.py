@@ -32,6 +32,9 @@ class OrganizationSerializer(serializers.ModelSerializer):
 
 
 class OrganizationRUDSerializer(serializers.ModelSerializer):
+	product = ProductSerializer(many=True, read_only=True)
+	contacts = ContactSerializer(many=False, read_only=True)
+
 	class Meta:
 		model = Organization
 		fields = '__all__'

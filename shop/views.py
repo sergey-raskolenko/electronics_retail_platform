@@ -1,4 +1,5 @@
-from rest_framework import generics, viewsets
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import generics, viewsets, filters
 from rest_framework.permissions import AllowAny
 
 from shop.serializers import ProductSerializer, ContactSerializer, OrganizationSerializer, OrganizationRUDSerializer
@@ -27,10 +28,12 @@ class OrganizationListView(generics.ListAPIView):
 	queryset = Organization.objects.all()
 	serializer_class = OrganizationSerializer
 	permission_classes = [AllowAny]
+	filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+	filterset_fields = ['contacts__country']
+	search_fields = ['contacts__country']
 
 
 class OrganizationRUDView(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Organization.objects.all()
 	serializer_class = OrganizationRUDSerializer
 	permission_classes = [AllowAny]
-
