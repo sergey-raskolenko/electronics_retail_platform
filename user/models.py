@@ -7,6 +7,9 @@ NULLABLE = {'blank': True, 'null': True}
 
 
 class User(AbstractUser):
+	"""
+	Модель пользователя
+	"""
 	objects = UserManager()
 
 	username = None

@@ -50,6 +50,9 @@ class OrganizationChoices(models.TextChoices):
 
 
 class Organization(models.Model):
+	"""
+	Модель организации
+	"""
 	organization_type = models.CharField(
 		max_length=2, choices=OrganizationChoices.choices, verbose_name='Тип организации'
 	)
@@ -77,13 +80,19 @@ class Organization(models.Model):
 		return self.name
 
 	def clean(self):
+		"""
+		Проверка завода без поставщика и долга на уровне модели
+		"""
 		if self.organization_type == OrganizationChoices.FACTORY and self.supplier:
 			raise ValidationError("Factory doesn't have suppliers")
 
-		if not self.supplier and self.debt > 0:
+		if self.organization_type == OrganizationChoices.FACTORY and self.debt > 0:
 			raise ValidationError("Factory can't have a dept")
 
 	def save(self, *args, **kwargs):
+		"""
+		Определение уровня иерархии организации
+		"""
 		if self.organization_type == OrganizationChoices.FACTORY:
 			self.hierarchy_level = 0
 		elif self.supplier and self.supplier.hierarchy_level == 0:

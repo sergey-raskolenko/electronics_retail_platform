@@ -19,6 +19,9 @@ class OrganizationAdmin(admin.ModelAdmin):
 	actions = ('clear_debt',)
 
 	def supplier_link(self, obj):
+		"""
+		Возвращает ссылку на объект поставщика.
+		"""
 		if not obj.supplier:
 			return None
 		else:
@@ -28,6 +31,9 @@ class OrganizationAdmin(admin.ModelAdmin):
 	supplier_link.short_description = "Поставщик"
 
 	def clear_debt(self, request, queryset):
+		"""
+		Admin-action для очистки задолженности перед поставщиком у выбранных объектов
+		"""
 		updated = queryset.update(debt=0)
 		self.message_user(
 			request,
