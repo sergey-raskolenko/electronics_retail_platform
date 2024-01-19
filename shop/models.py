@@ -71,6 +71,7 @@ class Organization(models.Model):
 		verbose_name = "Организация"
 		verbose_name_plural = "Организации"
 		db_table = 'organizations'
+		ordering = ('hierarchy_level', 'name',)
 
 	def __str__(self):
 		return self.name
