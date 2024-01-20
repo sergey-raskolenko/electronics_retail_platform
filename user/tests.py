@@ -35,3 +35,27 @@ class UserBaseTestCase(APITestCase):
 		data = self.data
 		response = self.client.post(reverse('user:token_obtain_pair'), data=data)
 		self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+	def test_create_su(self):
+		data = {
+			'email': 'admin@admin.admin',
+			'password': 'Adminadmin',
+			'first_name': 'Admin',
+			'last_name': 'Admin'
+		}
+		User.objects.create_superuser(**data)
+		csu = User.objects.get(email=data['email'])
+		self.assertTrue(csu)
+		self.assertTrue(csu.is_staff)
+		self.assertTrue(csu.is_superuser)
+
+		try:
+			User.objects.create_superuser(**data, is_staff=False)
+		except ValueError as e:
+			assert e
+
+		try:
+			User.objects.create_superuser(**data, is_superuser=False)
+		except ValueError as e:
+			assert e
+
